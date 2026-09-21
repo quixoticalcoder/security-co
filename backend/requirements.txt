@@ -1,0 +1,64 @@
+# --- Web framework -----------------------------------------------------
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# --- Settings / validation -----------------------------------------------------
+pydantic==2.10.4
+pydantic-settings==2.7.1
+
+# --- HTTP client (threat intel) -----------------------------------------------------
+httpx==0.28.1
+
+# --- Agent orchestration (spec section 2) -----------------------------------------------------
+# The agent's LLM is OpenRouter (OpenAI-compatible), driven via langchain-openai
+# — see backend/agent/llm_client.py. The versions below are verified working
+# together with the pinned langchain-core.
+langgraph==1.2.9
+langchain-core==1.5.1
+langchain-openai==1.4.1
+openai==2.51.0
+
+# --- Tool: inspect_website (spec section 4.1) -----------------------------------------------------
+playwright==1.49.1
+
+# --- Tool: domain_reputation (spec section 4.2) -----------------------------------------------------
+python-whois==0.9.5
+
+# --- Tool: content_classifier (spec section 4.3) -----------------------------------------------------
+onnxruntime==1.20.1
+huggingface_hub==0.27.1
+
+# --- Tool: web_search (not in the original spec — added 2026-07-25) -----------------------------------------------------
+# Keyless DuckDuckGo search, no signup.
+ddgs==9.14.4
+
+# --- Machine learning (network anomaly + BERT content classifier) -----------------------------------------------------
+# IMPORTANT: torch is intentionally NOT listed here — required by
+# transformers for the ealvaradob BERT model. Install it yourself FIRST,
+# with the command matching your hardware, then run
+# `pip install -r requirements.txt` for everything else.
+#   CPU only:   pip install torch
+#   NVIDIA GPU: pip install torch --index-url https://download.pytorch.org/whl/cu128
+transformers==4.47.1
+scikit-learn==1.6.0
+numpy==2.2.1
+joblib==1.4.2
+pandas==2.2.3
+
+# --- Network flow capture (network/flow_collector.py — spec section 5.1) ---
+psutil==6.1.1
+# TranAD (network/tranad.py — spec section 5.3) also runs on torch (the same
+# manual torch install noted above); no extra package needed.
+
+# --- Logging / utils -----------------------------------------------------
+python-dotenv==1.0.1
+
+# --- Testing -----------------------------------------------------
+pytest==8.3.4
+pytest-asyncio==0.25.0
+
+# --- MITRE ATT&CK mapping (mitre/ — spec section 6) ---------------------
+# SecureBERT embeddings run on transformers + torch (both already required
+# above; torch is the manual install noted above). The vector index itself
+# is a plain numpy array + sidecar JSON (mitre/build_index.py) — no faiss or
+# hosted vector DB needed at a few-hundred-technique scale.

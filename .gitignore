@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Environment files
+.env
+*.env.local
+
+# Node
+node_modules/
+dist/
+dist-extension/
+.vite/
+*.local
+*.tsbuildinfo
+
+# Model artifacts (large binary files — regenerate via scripts/train_isolation_forest.py)
+backend/model_artifacts/*.joblib
+backend/model_artifacts/*.pt
+backend/model_artifacts/*.threshold.json
+
+# MITRE ATT&CK index (regenerate via `python -m mitre.build_index`):
+# the ~47MB STIX bundle and the SecureBERT embeddings/projection/metadata.
+backend/data/mitre/
+
+# Downloaded full-size training datasets (not repo assets — see to-do.md for source links)
+GeneratedLabelledFlows.zip
+GeneratedLabelledFlows.md5
+*.pcap_ISCX.csv
+
+# Runtime state (SQLite verdict cache — router fast path, spec section 2)
+backend/data/cache.db
+backend/data/history.db
+backend/data/screenshots/
+backend/data/reports/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Logs
+*.log
