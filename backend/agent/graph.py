@@ -254,7 +254,7 @@ async def stream_case_traced(
     # fire-and-forget) so it can't be silently GC'd mid-write; runs off the
     # event loop since this is a real SecureBERT forward pass, same as every
     # other embedding call in this codebase.
-    if tool_call_records and verdict:
+    if tool_call_records and verdict and not get_settings().HOSTED_LITE:
         await asyncio.to_thread(
             record_case, run_id, case_type, raw_input, verdict.get("label", ""), verdict.get("reason", "")
         )

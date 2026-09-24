@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Security Co"
     ENVIRONMENT: str = Field(default="development", description="development | production")
     DEBUG: bool = True
+    HOSTED_LITE: bool = False
     LOG_LEVEL: str = "INFO"
 
     # --- CORS ------------------------------------------------------------

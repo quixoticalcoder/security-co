@@ -215,6 +215,9 @@ def _for_llm(full: dict) -> dict:
 async def inspect_website(url: str) -> tuple[dict, dict]:
     """Opens a URL in an isolated sandbox browser and reports what the page actually does — final destination after redirects, a screenshot, visible page text, any forms and where they submit to, every outbound network request, whether its scripts/images/stylesheets are hosted on this same domain or hotlinked from somewhere else (a page that visually matches a real brand but loads that brand's own assets live is a strong tell), and the responding server's HTTP headers and IP address. Use this first for almost any unknown link."""
     settings = get_settings()
+    if settings.HOSTED_LITE:
+        from tools.inspect_http import inspect_http
+        return await inspect_http(url)
 
     try:
         from playwright.async_api import async_playwright

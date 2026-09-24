@@ -4,6 +4,31 @@ Security Co is a local-first cybersecurity research prototype for investigating 
 
 > **Prototype notice.** Security Co is intended for evaluation, education, and controlled experimentation. It is not a substitute for professional incident response, endpoint protection, or human review. Model outputs, reputation data, and external services can be incomplete, unavailable, or wrong; no verdict is a guarantee of safety.
 
+## Free hosted deployment
+
+[Deploy Security Co on Render](https://render.com/deploy?repo=https://github.com/quixoticalcoder/security-co)
+
+The `render.yaml` Blueprint selects a **free** Docker web service. The Next.js dashboard and a loopback-only FastAPI process share one public URL. Set `OPENROUTER_API_KEY` and `SECURITY_CO_ACCESS_PASSWORD` during setup. Sign in with username **reviewer** and your chosen password. Never publish either secret.
+
+The default hosted model is [`openrouter/free`](https://openrouter.ai/openrouter/free), which routes to free models supporting the required tool calls. It still requires an OpenRouter key and is subject to provider availability and rate limits. No paid fallback is configured.
+
+`HOSTED_LITE=true` preserves AI-assisted link/email investigations, HTTP page-text inspection, available domain reputation, run history, and report exports. To fit the free host, it disables local ONNX/BERT classifiers, embedding recall, device network-flow processing, and report-and-block actions. HTTP inspection does not execute JavaScript or capture screenshots. The full local installation retains those capabilities with `HOSTED_LITE=false` (the default).
+
+HTTP inspection restricts targets to public IP addresses on ports 80/443, validates each redirect, pins the connection to the checked address, enforces TLS validation, and bounds response size. Submitted content is processed through OpenRouter and its selected model provider. Only submit material you are authorized to share. History is shared among people with the reviewer password and is ephemeral: Render restarts and redeployments can erase it. Download reports you need to keep.
+
+Free instances sleep when idle and have limited memory/CPU; use one investigation at a time. The browser extension and local traffic collector still require local installation. A hosted dashboard cannot monitor visitors' devices automatically.
+
+Validation commands:
+
+```bash
+pip install -r backend/requirements-hosted.txt pytest
+HOSTED_LITE=true PYTHONPATH=backend python -m pytest backend/tests/test_hosted.py -q
+cd dashboard
+pnpm install --frozen-lockfile
+pnpm exec tsc --noEmit
+HOSTED_LITE=true pnpm build
+```
+
 ## Contents
 
 - [Capabilities](#capabilities)

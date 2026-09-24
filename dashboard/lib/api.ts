@@ -14,7 +14,7 @@ const STORAGE_KEY = 'apiBaseUrl'
 // (they run it on :8010, not this default); the hardcoded value is the last
 // resort for `pnpm dev` with nothing configured.
 const ENV_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.trim()
-const DEFAULT_BASE_URL = ENV_BASE_URL || 'http://localhost:8000'
+const DEFAULT_BASE_URL = ENV_BASE_URL || '/api'
 
 export function getApiBaseUrl(): string {
   if (typeof window === 'undefined') return DEFAULT_BASE_URL

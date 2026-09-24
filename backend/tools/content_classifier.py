@@ -111,6 +111,8 @@ def _score_text(text: str) -> dict:
 @tool
 async def content_classifier(text: str) -> dict:
     """Scores a block of text for phishing-style language — urgency phrasing, brand mentions, credential requests. Use this when the sandbox text alone is ambiguous."""
+    if get_settings().HOSTED_LITE:
+        return {"unavailable": True, "detail": "Local ML classifiers are disabled on this free hosted instance. Do not infer a classifier score."}
     if not text or not text.strip():
         return {"error": "Empty input"}
 

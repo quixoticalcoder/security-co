@@ -25,6 +25,9 @@ from memory.case_index import recall_similar_cases as _recall_similar_cases
 @tool
 async def recall_similar_cases(description: str) -> dict:
     """Searches past investigations for cases that resemble this one in substance — a similar brand-impersonation pattern, similar page structure, similar hosting, similar evasion trick — even when the exact domain or wording has never been seen before. Describe what's notable about the current case (the domain, what the page does, any suspicious pattern you've noticed) as the input. Most useful when something feels like a variation on a known trick but doesn't cleanly match blocklist or reputation data on its own."""
+    from config import get_settings
+    if get_settings().HOSTED_LITE:
+        return {"matches": [], "detail": "Embedding-based case recall is disabled on the free hosted instance."}
     matches = await asyncio.to_thread(_recall_similar_cases, description)
     if not matches:
         return {"matches": [], "detail": "No sufficiently similar past investigations found."}

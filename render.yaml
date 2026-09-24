@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: security-co
+    runtime: docker
+    plan: free
+    autoDeployTrigger: off
+    healthCheckPath: /api/health
+    envVars:
+      - key: HOSTED_LITE
+        value: "true"
+      - key: DEBUG
+        value: "false"
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: openrouter/free
+      - key: SECURITY_CO_ACCESS_PASSWORD
+        sync: false

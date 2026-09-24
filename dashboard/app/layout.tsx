@@ -40,7 +40,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {process.env.HOSTED_LITE === 'true' && <div style={{padding:'10px 20px', background:'#172033', color:'#dce6ff', fontSize:13}}>
+            Free hosted edition: AI investigations use HTTP page text. Local ML scores, rendered screenshots and device monitoring require the local installation. History resets on host restart.
+          </div>}
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

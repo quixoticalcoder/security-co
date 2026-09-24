@@ -1,0 +1,16 @@
+.git
+**/node_modules
+**/.next
+**/.env
+**/.env.*
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+.venv
+Presentation
+extension
+backend/data/case_memory
+backend/data/network_datasets
+backend/data/*.db
+backend/reports
+backend/screenshots

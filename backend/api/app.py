@@ -60,6 +60,15 @@ def create_app() -> FastAPI:
     app.add_middleware(RateLimitMiddleware, requests_per_minute=240 if settings.DEBUG else 120)
     app.add_middleware(RequestLoggingMiddleware)
 
+    if settings.HOSTED_LITE:
+        from fastapi.responses import JSONResponse
+
+        @app.middleware("http")
+        async def hosted_limits(request, call_next):
+            if request.url.path in {"/quick-check", "/quick-check-email", "/report-flow", "/report"}:
+                return JSONResponse(status_code=503, content={"detail": "This capability requires the full local installation. Use link or email investigation on the hosted version."})
+            return await call_next(request)
+
     register_exception_handlers(app)
 
     # Specific routes must be registered before the catch-all /screenshots
