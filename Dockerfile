@@ -8,6 +8,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 HOSTED_LITE=true
 RUN pnpm build
 
 FROM python:3.11-slim-bookworm
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libstdc++6 && rm -rf /var/lib/apt/lists/*
 COPY --from=dashboard /usr/local/bin/node /usr/local/bin/node
 WORKDIR /app
 COPY backend/requirements-hosted.txt ./
