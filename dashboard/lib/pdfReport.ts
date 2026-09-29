@@ -234,7 +234,7 @@ export async function generateRunReportPdf(detail: RunDetail): Promise<void> {
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(8.5)
   doc.setTextColor(...COLOR.muted)
-  doc.text('/ 100 risk score', MARGIN + scoreW + 3, layout.y)
+  doc.text('/ 100 verdict confidence', MARGIN + scoreW + 3, layout.y)
   layout.spacer(4)
   doc.setFillColor(...COLOR.soft)
   doc.roundedRect(MARGIN, layout.y, CONTENT_W, 2.5, 1, 1, 'F')

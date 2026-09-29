@@ -628,7 +628,7 @@ function ResultCard({ target, sev, score, reason, mitigation }: { target: string
       </div>
       <div className="result-score">
         <strong>{score}</strong>
-        <span>/ 100 risk score</span>
+        <span>/ 100 verdict confidence</span>
         <div className="score-meter">
           <span style={{ width: `${score}%`, background: meterColor(sev) }} />
         </div>

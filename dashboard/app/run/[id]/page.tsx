@@ -233,7 +233,7 @@ function RunReport({ detail }: { detail: RunDetail }) {
         <div className="run-score-bar">
           <div className="run-score-bar-head">
             <strong>{score}</strong>
-            <span>/ 100 risk score</span>
+            <span>/ 100 verdict confidence</span>
           </div>
           <ScoreBar score={score} color={meterColor(sev)} className="run-score-bar-track" />
         </div>
