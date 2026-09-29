@@ -4,6 +4,10 @@ Security Co is a local-first cybersecurity research prototype for investigating 
 
 > **Prototype notice.** Security Co is intended for evaluation, education, and controlled experimentation. It is not a substitute for professional incident response, endpoint protection, or human review. Model outputs, reputation data, and external services can be incomplete, unavailable, or wrong; no verdict is a guarantee of safety.
 
+## Open live application
+
+https://security-co.onrender.com
+
 ## Free hosted deployment
 
 [Deploy Security Co on Render](https://render.com/deploy?repo=https://github.com/quixoticalcoder/security-co)
