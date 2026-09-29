@@ -41,6 +41,7 @@ function unreachable(base: string): ApiError {
 }
 
 async function handle<T>(response: Response): Promise<T> {
+  if (response.status === 401 && typeof window !== 'undefined') window.location.assign('/signin')
   if (!response.ok) {
     let message = response.statusText
     try {
@@ -71,7 +72,7 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
   try {
     response = await fetch(`${base}${path}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Security-Request': '1' },
       body: JSON.stringify(body),
     })
   } catch {
@@ -94,7 +95,7 @@ export async function* apiPostStream(
   try {
     response = await fetch(`${base}${path}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Security-Request': '1' },
       body: JSON.stringify(body),
     })
   } catch {

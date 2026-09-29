@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from '@/lib/theme'
 import './globals.css'
+import { SessionControls } from '@/components/session-controls'
 
 export const metadata: Metadata = {
   title: 'Security Co | Security intelligence',
@@ -44,6 +45,7 @@ export default function RootLayout({
           {process.env.HOSTED_LITE === 'true' && <div style={{padding:'10px 20px', background:'#172033', color:'#dce6ff', fontSize:13}}>
             Free hosted edition: AI investigations use HTTP page text. Local ML scores, rendered screenshots and device monitoring require the local installation. History resets on host restart.
           </div>}
+          {process.env.HOSTED_LITE === 'true' && <SessionControls />}
           {children}
         </ThemeProvider>
       </body>

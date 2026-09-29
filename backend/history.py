@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from config import get_settings
+from hosted_auth import owner
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs (
@@ -39,6 +40,9 @@ def _connect() -> sqlite3.Connection:
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path)
     conn.execute(_SCHEMA)
+    if 'owner' not in {row[1] for row in conn.execute('PRAGMA table_info(runs)')}:
+        conn.execute("ALTER TABLE runs ADD COLUMN owner TEXT NOT NULL DEFAULT 'owner'")
+        conn.commit()
     return conn
 
 
@@ -73,9 +77,9 @@ def record_run(
 
     with _connect() as conn:
         conn.execute(
-            "INSERT INTO runs (id, case_type, raw_input, created_at, verdict_json, tool_calls_json, report_path) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (run_id, case_type, raw_input, time.time(), json.dumps(verdict), json.dumps(trimmed_calls), report_path),
+            "INSERT INTO runs (id, case_type, raw_input, created_at, verdict_json, tool_calls_json, report_path, owner) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (run_id, case_type, raw_input, time.time(), json.dumps(verdict), json.dumps(trimmed_calls), report_path, owner.get()),
         )
         conn.commit()
     return run_id
@@ -88,11 +92,11 @@ def list_runs(limit: int = 50, case_types: Optional[list[str]] = None) -> list[d
     ["link", "email"] for phishing checks, ["network_flow"] for anomaly
     flows — so the UI's Phishing/Anomaly views each get only their own runs
     (and one view can't crowd the other out of a limited window)."""
-    query = "SELECT id, case_type, raw_input, created_at, verdict_json FROM runs"
-    params: list[Any] = []
+    query = "SELECT id, case_type, raw_input, created_at, verdict_json FROM runs WHERE owner = ?"
+    params: list[Any] = [owner.get()]
     if case_types:
         placeholders = ",".join("?" for _ in case_types)
-        query += f" WHERE case_type IN ({placeholders})"
+        query += f" AND case_type IN ({placeholders})"
         params.extend(case_types)
     query += " ORDER BY created_at DESC LIMIT ?"
     params.append(limit)
@@ -111,8 +115,8 @@ def get_run(run_id: str) -> Optional[dict]:
     with _connect() as conn:
         row = conn.execute(
             "SELECT id, case_type, raw_input, created_at, verdict_json, tool_calls_json, report_path "
-            "FROM runs WHERE id = ?",
-            (run_id,),
+            "FROM runs WHERE id = ? AND owner = ?",
+            (run_id, owner.get()),
         ).fetchone()
 
     if row is None:
@@ -127,3 +131,11 @@ def get_run(run_id: str) -> Optional[dict]:
         "tool_calls": json.loads(row[5]),
         "report_path": row[6],
     }
+
+
+def owns_report(filename: str) -> bool:
+    if not filename or Path(filename).name != filename:
+        return False
+    with _connect() as conn:
+        rows = conn.execute('SELECT report_path FROM runs WHERE owner = ?', (owner.get(),)).fetchall()
+    return any(path and Path(path).name == filename for (path,) in rows)

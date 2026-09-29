@@ -11,6 +11,7 @@ one the same way; the API can reuse this later without changes here.
 from __future__ import annotations
 
 from datetime import datetime
+import uuid
 from pathlib import Path
 from typing import Any, Optional
 
@@ -119,7 +120,7 @@ def generate_report(case_type: str, raw_input: str, tool_calls: list[dict[str, A
 
     now = datetime.now()
     label = sanitize_for_filename(raw_input) if case_type != "email" else "email"
-    report_path = report_dir / f"{now:%Y%m%d_%H%M%S}_{label}.md"
+    report_path = report_dir / f"{now:%Y%m%d_%H%M%S}_{label}_{uuid.uuid4().hex}.md"
 
     input_display = raw_input if case_type != "email" else raw_input[:300] + ("..." if len(raw_input) > 300 else "")
     verdict = verdict or {"label": "inconclusive", "confidence": 0.0, "reason": "No verdict was reached."}

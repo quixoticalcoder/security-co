@@ -18,9 +18,14 @@ def test_pins_resolved_address(monkeypatch):
 
 def test_hosted_health_and_disabled_features(monkeypatch):
     monkeypatch.setenv('HOSTED_LITE','true')
+    monkeypatch.setenv('SECURITY_CO_ACCESS_PASSWORD','test-only-password')
     get_settings.cache_clear()
     from api.app import create_app
     with TestClient(create_app()) as client:
         assert client.get('/health').status_code == 200
+        from hosted_auth import sign, COOKIE
+        import time
+        client.cookies.set(COOKIE, sign({'role':'owner','id':'owner','exp':time.time()+60}))
+        client.headers['X-Security-Request']='1'
         assert client.post('/report-flow', json={}).status_code == 503
         assert client.post('/quick-check', json={}).status_code == 503
