@@ -1063,7 +1063,7 @@ function SettingsView() {
         <section className="panel settings-card animate-in">
           <p className="eyebrow">Backend connection</p>
           <h2>FastAPI engine</h2>
-          <p className="muted">Configure the analysis service that powers Security Co. No authentication is required (POC scope).</p>
+          <p className="muted">Configure the analysis service that powers Security Co. The hosted demo uses your password workspace or reviewer session.</p>
           <label>
             Endpoint URL
             <input value={url} onChange={(e) => onUrlChange(e.target.value)} placeholder="http://localhost:8000" />

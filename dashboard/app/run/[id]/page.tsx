@@ -87,7 +87,7 @@ function fileUrl(mount: 'screenshots', path: string): string {
 // security report. Translate the common cases into plain language; fall
 // back to a generic line rather than the raw text for anything else.
 function friendlyNavError(raw?: string): string {
-  if (!raw) return 'the sandbox could not load the page.'
+  if (!raw) return 'this inspection did not capture a browser screenshot. For browser screenshots, run the full application locally.'
   const text = raw.toLowerCase()
   if (text.includes('timeout')) return 'the page took too long to load and timed out.'
   if (text.includes('err_name_not_resolved') || text.includes('name_not_resolved')) {

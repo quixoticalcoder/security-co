@@ -10,6 +10,8 @@ https://security-co.onrender.com
 
 ## Free hosted deployment
 
+> **Live demo and local features.** The live demo includes link and email investigations, history, and report exports. To use local ML detection, browser screenshots, device monitoring, and Report & Block, run the full application locally using the [Quick start instructions](#quick-start). These capabilities belong to the full local application and are not enabled in the free hosted edition.
+
 [Deploy Security Co on Render](https://render.com/deploy?repo=https://github.com/quixoticalcoder/security-co)
 
 The `render.yaml` Blueprint selects a **free** Docker web service. The Next.js dashboard and a loopback-only FastAPI process share one public URL. Set `OPENROUTER_API_KEY` and `SECURITY_CO_ACCESS_PASSWORD` during setup. The landing page offers password access to the original workspace and **Try the live reviewer demo**, which requires no password. Never publish either secret.

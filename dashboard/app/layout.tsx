@@ -43,7 +43,8 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           {process.env.HOSTED_LITE === 'true' && <div style={{padding:'10px 20px', background:'#172033', color:'#dce6ff', fontSize:13}}>
-            Free hosted edition: AI investigations use HTTP page text. Local ML scores, rendered screenshots and device monitoring require the local installation. History resets on host restart.
+            Live demo: link and email investigations, history, and report exports. For local ML detection, browser screenshots, device monitoring, and Report &amp; Block, run the full application locally.{' '}
+            <a href="https://github.com/quixoticalcoder/security-co#quick-start" target="_blank" rel="noopener noreferrer" style={{color:'inherit', textDecoration:'underline'}}>Local setup instructions</a>. History resets on host restart.
           </div>}
           {process.env.HOSTED_LITE === 'true' && <SessionControls />}
           {children}
